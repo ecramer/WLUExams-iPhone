@@ -182,7 +182,7 @@
 
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = 90; // tweak as needed
+    const int movementDistance = 110; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
     
     int movement = (up ? -movementDistance : movementDistance);
