@@ -22,10 +22,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *addExam = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(goToAddExams)];
+    self.addExam = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(goToAddExams)];
     UIBarButtonItem *editExam = self.editButtonItem;
 
-    self.navigationItem.rightBarButtonItems = @[addExam, editExam];
+    self.navigationItem.rightBarButtonItems = @[self.addExam, editExam];
     
 }
 
@@ -54,7 +54,17 @@
 
 }
 
-
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:YES];
+    if (editing) {
+        self.addExam.enabled = NO;
+        self.btnLogout.enabled = NO;
+    } else {
+        self.addExam.enabled = YES;
+        self.btnLogout.enabled = YES;
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

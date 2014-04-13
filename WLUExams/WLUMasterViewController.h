@@ -10,10 +10,12 @@
 
 @interface WLUMasterViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnLogout;
 - (IBAction)logoutUser:(id)sender;
 @property NSMutableArray *exams;
 @property NSMutableData *receivedData;
 @property NSURLConnection *connection;
 -(void)getUserExams;
+@property UIBarButtonItem *addExam;
 
 @end
