@@ -50,25 +50,35 @@
     
     NSString *email = self.txtEmail.text;
     NSString *password = self.txtPassword.text;
-    NSString *bodyData = [NSString stringWithFormat: @"email=%@&password=%@", email, password];
     
-    // Create the NSMutableData to hold the received data.
-    // receivedData is an instance variable declared elsewhere.
-    _receivedData = [NSMutableData dataWithCapacity: 0];
+    if ([email length] == 0 || [password length] == 0) {
+        
+        self.lblMessage.text = @"Email and password cannot be empty.";
+        
+    } else {
+        
+        NSString *bodyData = [NSString stringWithFormat: @"email=%@&password=%@", email, password];
+        
+        // Create the NSMutableData to hold the received data.
+        // receivedData is an instance variable declared elsewhere.
+        _receivedData = [NSMutableData dataWithCapacity: 0];
+        
+        // create the connection with the request
+        // and start loading the data
+        NSMutableURLRequest *request = [NSMutableURLRequest
+                                        
+                                        requestWithURL:[NSURL URLWithString:link]];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[NSData dataWithBytes:[bodyData UTF8String] length:strlen([bodyData UTF8String])]];
+        
+        
+        _connection=[[NSURLConnection alloc]
+                     initWithRequest:request delegate:self];
+        
+    }
     
-    // create the connection with the request
-    // and start loading the data
-    NSMutableURLRequest *request = [NSMutableURLRequest
-                                    
-                                    requestWithURL:[NSURL URLWithString:link]];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[NSData dataWithBytes:[bodyData UTF8String] length:strlen([bodyData UTF8String])]];
-    
-    
-    _connection=[[NSURLConnection alloc]
-                 initWithRequest:request delegate:self];
     
 }
 
@@ -151,6 +161,13 @@
     NSString *url = [[NSMutableString alloc] initWithString: @"http://hopper.wlu.ca/~cram8680/php/Users/authenticate.php"];
     [self authenticate:url];
     
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
